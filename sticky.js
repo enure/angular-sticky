@@ -83,15 +83,17 @@ angular.module('sticky', [])
 				// Remove the listeners when the scope is destroyed
 				//
 				function onDestroy(){
-					$window.off('scroll', checkSticky);
-					$window.off('resize', resize);
+					$window
+						.off('scroll', checkSticky)
+						.off('resize', resize);
 				}
 
 				// Attach our listeners
 				//
 				$scope.$on('$destroy', onDestroy);
-				$window.on('scroll', checkSticky);
-				$window.on('resize', resize);
+				$window
+					.on('scroll', checkSticky)
+					.on('resize', resize);
 
 				setInitial();
 			});
