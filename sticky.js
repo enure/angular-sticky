@@ -21,25 +21,26 @@ angular.module('sticky', [])
 		},
 		link: function($scope, $elem, $attrs){
 			$timeout(function(){
-				var offsetTop = $scope.offset || 0,
+				var offsetTop = parseFloat($scope.offset) || 0,
 					stickyClass = $scope.stickyClass || '',
 					mediaQuery = $scope.mediaQuery || 'min-width: 0',
 					$window = angular.element(window),
 					doc = document.documentElement,
 					initialPositionStyle = $elem.css('position'),
+					initialTopValue = $elem.css('top'),
 					stickyLine,
 					scrollTop;
-
-
-				// Set the top offset
-				//
-				$elem.css('top', offsetTop+'px');
-
 
 				// Get the sticky line
 				//
 				function setInitial(){
-					stickyLine = $elem[0].offsetTop - offsetTop;
+					// Cannot use offsetTop, because this gets
+					// the Y position relative to the nearest parent
+					// which is positioned (position: absolute, relative).
+					// Instead, use Element.getBoundingClientRect():
+					// https://developer.mozilla.org/en-US/docs/Web/API/element.getBoundingClientRect
+					stickyLine = $elem[0].getBoundingClientRect().top - offsetTop;
+					console.log('stickyLine is', stickyLine, 'offsetTop is', offsetTop);
 					checkSticky();
 				}
 
@@ -49,14 +50,17 @@ angular.module('sticky', [])
 					scrollTop = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
 
 					if ( scrollTop >= stickyLine && matchMedia('('+ mediaQuery +')').matches ){
-						$elem.addClass(stickyClass);
-						$elem.css('position', 'fixed');
+						$elem
+							.addClass(stickyClass)
+							.css('position', 'fixed')
+							.css('top', offsetTop+'px');
 					} else {
-						$elem.removeClass(stickyClass);
-						$elem.css('position', initialPositionStyle);
+						$elem
+							.removeClass(stickyClass)
+							.css('position', initialPositionStyle)
+							.css('top', initialTopValue);
 					}
 				}
-
 
 				// Handle the resize event
 				//
@@ -80,6 +84,6 @@ angular.module('sticky', [])
 
 				setInitial();
 			});
-		},
+		}
 	};
 }]);

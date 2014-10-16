@@ -18,10 +18,17 @@
 </head>
 <body ng-app="demo" style="min-height: 2000px;">
     <div class="sticky-box" style="background-color: blue; margin: 50px;" sticky media-query="min-width: 768px">
-        margin: 50px;
+        margin: 50px;<br>
+        min-width: 768
     </div>
     <div class="sticky-box" style="background-color: orange; margin: 50px;" sticky offset="250">
-        margin: 50px;
+        margin: 50px;<br>
+        offset: 250
+    </div>
+    <div class="sticky-box" style="position: absolute; left: 300px; top: 50px; background-color: red;" sticky offset="50">
+        initial position:<br>
+        left: 300px;<br>
+        top: 50px;
     </div>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.min.js"></script>
     <script src="sticky.js"></script>
