@@ -40,7 +40,6 @@ angular.module('sticky', [])
 					// Instead, use Element.getBoundingClientRect():
 					// https://developer.mozilla.org/en-US/docs/Web/API/element.getBoundingClientRect
 					stickyLine = $elem[0].getBoundingClientRect().top - offsetTop;
-					console.log('stickyLine is', stickyLine, 'offsetTop is', offsetTop);
 					checkSticky();
 				}
 
@@ -65,7 +64,6 @@ angular.module('sticky', [])
 				// Handle the resize event
 				//
 				function resize(){
-					$elem.css('position', initialPositionStyle);
 					$timeout(setInitial);
 				}
 
