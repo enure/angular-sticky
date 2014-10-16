@@ -28,8 +28,18 @@ angular.module('sticky', [])
 					doc = document.documentElement,
 					initialPositionStyle = $elem.css('position'),
 					initialTopValue = $elem.css('top'),
+					initialWidthValue = $elem[0].offsetWidth,
 					stickyLine,
 					scrollTop;
+
+
+				// Get the width
+				//
+				function updateNonFixedWidth() {
+					if ($elem.css('position') !== 'fixed') {
+						initialWidthValue = $elem[0].offsetWidth;
+					}
+				}
 
 				// Get the sticky line
 				//
@@ -47,16 +57,19 @@ angular.module('sticky', [])
 				//
 				function checkSticky(){
 					scrollTop = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
+					updateNonFixedWidth();
 
 					if ( scrollTop >= stickyLine && matchMedia('('+ mediaQuery +')').matches ){
 						$elem
 							.addClass(stickyClass)
 							.css('position', 'fixed')
+							.css('width', initialWidthValue + 'px')
 							.css('top', offsetTop+'px');
 					} else {
 						$elem
 							.removeClass(stickyClass)
 							.css('position', initialPositionStyle)
+							.css('width', '')
 							.css('top', initialTopValue);
 					}
 				}
